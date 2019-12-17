@@ -1,11 +1,9 @@
 from splinter import Browser
 from bs4 import BeautifulSoup
-import pandas as pd
-import numpy as np
-listings = {} 
+listings = {}
 def init_browser():
     # @NOTE: Replace the path with your actual path to the chromedriver
-    executable_path = {"executable_path":"chromedriver"}
+    executable_path = {"executable_path":"Resources/chromedriver"}
     return Browser("chrome", **executable_path, headless=False)
 def scrape():
     browser = init_browser()
@@ -15,7 +13,6 @@ def scrape():
     html = browser.html
     title = []
     soup = BeautifulSoup(html, "html.parser")
-    #soup.find_all('p')
     titles = soup.find_all("strong")
     for item in titles:
         title.append(item.text.replace("\xa0",""))
@@ -25,7 +22,7 @@ def scrape():
 scrape()
 #for item in listings:
 #   print (item.p.text)
-
+import pandas as pd
 titles_2 = []
 for item in listings["miningco"]:
     item = item[5:-9]
@@ -33,4 +30,4 @@ for item in listings["miningco"]:
     titles_2.append(item)
 df = pd.DataFrame(titles_2)
 df.columns = ["Company","Revenue (Million)"]
-df.to_csv("Top 40 Mining Companies by Revenue.csv")
+df.to_csv("Resources/Top 40 Mining Companies by Revenue.csv")
